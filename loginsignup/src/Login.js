@@ -20,7 +20,6 @@ function Login() {
                 </div>
                 <Link  style={{ color: 'inherit', textDecoration: 'inherit'}} to="doLogin">
                 <button type="button" class="btn btn-primary btn-lg btn-block">Login</button></Link></div>
-                
                 </div>
             </div>
         </div>
