@@ -17,7 +17,6 @@ const signupSchema=new mongoose.Schema({
    lastName: String,
    email: String,
    password: String,
-   mobileno: Number,
    dob: String,
  education: String,
    streetnum: Number,
@@ -26,7 +25,8 @@ const signupSchema=new mongoose.Schema({
    city: String,
    state: String,
    country: String,
-   attachments: String
+   attachments: String,
+   mobileno: String,
 });
 
 const Signuppost=mongoose.model("Signuppost",signupSchema);
@@ -47,7 +47,28 @@ app.post("/",createPost);
 //    newdata.save();
 //    res.status.json("Success");
 // })
+const findPost=async (req,res) => {
+const data=req.body;
+console.log(data);
+//const data={mobileno: "8299852684"}
+await Signuppost.findOne(data,function(err,foundItem){
+   if(!err)
+   {
+//  if(foundItem)
+//  {console.log("found");
+//    res.json({item: "Present"});
+//  }
+// else {
+//    console.log("Not found");
+//    res.json({item: "Not present"});
+// }
+res.json(foundItem);
+   }
+   else console.log(err);
+})
 
+}
+app.post("/find",findPost);
 mongoose.connect("mongodb://localhost:27017/LoginSignUp",{useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => app.listen(5000,function(){
    console.log("Server Running successfully on 5000");

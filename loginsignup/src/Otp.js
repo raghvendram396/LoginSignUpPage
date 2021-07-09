@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import firebase from './firebase';
 import {useSelector, useDispatch} from "react-redux";
 import {updateStore} from "./action/action";
@@ -13,17 +13,50 @@ function Otp() {
     })
     const [visform,setvisform]=useState(true)
     const wholeform=useSelector(state=> state);
+   // let wholeform;
+    console.log("Ye otp me h");
+    console.log(wholeform);
     const dispatch=useDispatch();
+   // useEffect(()=> {dispatch(updateStore(wholeform))},[dispatch])
     const [verified, setverified] =useState(false);
+    const [present,setpresent]=useState(false);
+    const [otpsent,setotpsent]=useState(false);
+    const [otpfail,setotpfail]=useState(false);
+    const [wrongotp,setwrongotp]=useState(false);
     const handleChange=(e) => {
     const name=e.target.name;
+    const n=String(name);
     const value=e.target.value;
-    
     setmobile({...details, [name]:value})
+    if(n==="mobile")
+    {
+    axios.post("http://localhost:5000/find",{mobileno:String(e.target.value)})
+    .then(response => {
+      const {data}=response.data;
+      console.log("Ye data");
+      console.log(data);
+      console.log(e.target.value.length);
+      console.log("Ye post /find me h");
+      console.log(data);
+      console.log("Ye mobile");
+      console.log(details.mobile);
+  
+      if(data!=null)
+      {setpresent(false);}
+      else if(String(e.target.value).length==10)
+      {setpresent(true);
+      setmobile({...details, mobile: ""})}
+
+
+    })
+    .catch(err=> console.log(err));
+    // setmobile({...details, [name]:value})
+  }
+
 }
 const [created, setcreated]=useState(false);
     const handlefinalClick=() => {
-axios.post("http://localhost:5000/",{...wholeform, mobileno: details.mobile})
+axios.post("http://localhost:5000/",{...wholeform, mobileno: String(details.mobile)})
 .then(response => {
     setcreated(true);
     setverified(false);
@@ -42,11 +75,15 @@ axios.post("http://localhost:5000/",{...wholeform, mobileno: details.mobile})
               // SMS sent. Prompt user to type the code from the message, then sign the
               // user in with confirmationResult.confirm(code).
               window.confirmationResult = confirmationResult;
-              console.log("OTP has been sent")
+              setotpsent(true);
+              setotpfail(false);
               // ...
             }).catch((error) => {
               // Error; SMS not sent
               // ...
+              setotpsent(false);
+              setotpfail(true);
+              setpresent(false);
               console.log("SMS not sent")
             });
      }
@@ -71,8 +108,10 @@ axios.post("http://localhost:5000/",{...wholeform, mobileno: details.mobile})
       const user = result.user;
       console.log(JSON.stringify(user))
       setverified(true);
+      setwrongotp(false);
       // ...
     }).catch((error) => {
+      setwrongotp(true);
    console.log("wrong otp")
     });
   }
@@ -81,15 +120,20 @@ axios.post("http://localhost:5000/",{...wholeform, mobileno: details.mobile})
     <div>
     <div style={{display : visform? "block": "none"}}>
       <h2>Login Form</h2>
-      <form onSubmit={onSignInSubmit}>
+      <form onSubmit={onSignInSubmit} style={{display: otpsent? "none":"block"}}>
         <div id="sign-in-button"></div>
-        <input type="number" name="mobile" placeholder="Mobile number" required onChange={handleChange}/>
+        <div style={{display :present ? "block":"none"}}>Account exist with given number</div>
+        <div style={{display: otpfail && !present? "block": "none", color: "red"}}>Otp not sent</div>
+        <input type="number" name="mobile" placeholder="Mobile number" value={details.mobile===0 ? "" : details.mobile} required onChange={handleChange}/>
         <button type="submit">Submit</button>
       </form>
 
+     
+      <form onSubmit={onSubmitOTP} style={{display: otpsent ? "block":"none"}}>
       <h2>Enter OTP</h2>
-      <form onSubmit={onSubmitOTP}>
+      <div style={{display: otpsent ? "block": "none" , color: "green"}}>Otp has been sent</div>
         <input type="number" name="otp" placeholder="OTP Number" required onChange={handleChange}/>
+        <div style={{display : wrongotp ? "block" : "none"}}>Wrong otp</div>
         <button type="submit">Submit</button>
       </form>
       <button type="submit" onClick={handlefinalClick} style={{display: verified ? "block": "none"}}>

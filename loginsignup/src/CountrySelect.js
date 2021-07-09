@@ -5,7 +5,7 @@ import FileBase from "react-file-base64";
 function CountrySelect(props) {
     return (
         <div className="dropdown">
- <select name="country" onChnange={(event) =>props.update(event)}>
+ <select name="country" onChnange={props.update}>
     <option>Choose a country...</option>
    <option value="Afganistan">Afghanistan</option>
    <option value="Albania">Albania</option>

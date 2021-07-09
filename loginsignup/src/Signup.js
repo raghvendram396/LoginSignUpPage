@@ -51,8 +51,8 @@ function Signup() {
     }
 
     const handleClick=() => {
-
-  console.log(formdata.firstname);
+console.log("ye form ka data h");
+  console.log(formdata);
   if(formdata.firstname!="")
   setsubmit(true);
     }
@@ -98,19 +98,19 @@ setformdata({...formdata, [name]: event.target.value})
         <div className="signup form-group">
             <form className="ff" autofill="false" onSubmit={handleSubmit}>
                 <input className="inp form-control" type="text" name="firstname" value={formdata.firstname} placeholder="First Name" onChange={fillform} required></input>
-                <input className="inp form-control" type="text" name="middlename" value={formdata.middlename} placeholder="Middle Name" onChange={fillform} required></input>
+                <input className="inp form-control" type="text" name="middlename" value={formdata.middlename} placeholder="Middle Name" onChange={fillform} ></input>
                 <input className="inp form-control" type="text" name="lastname" value={formdata.lastname} placeholder="Last Name" onChange={fillform} required></input>
-                <input className="inp form-control" type="text" name="email" value={formdata.email} placeholder="Email" onChange={fillform}></input>
-                <input className="inp form-control" type="password" name="password" value={formdata.password} placeholder="Password" onChange={fillform}></input>
+                <input className="inp form-control" type="email" name="email" value={formdata.email} placeholder="Email" onChange={fillform} required></input>
+                <input className="inp form-control" type="password" name="password" value={formdata.password} placeholder="Password" onChange={fillform} required></input>
 
-                <input className="inp form-control" type="password" id="cnf" name="Confirmpassword" value={cnfpass} placeholder="Confirm password" onChange={(event) =>{setcnfpass(event.target.value)}} onChane={handlecnf}></input>
+                <input className="inp form-control" type="password" id="cnf" name="Confirmpassword" value={cnfpass} placeholder="Confirm password" onChange={(event) =>{setcnfpass(event.target.value)}} onChane={handlecnf} required></input>
               
                 {/* <input className="inp form-control" type="tel" name="mobileno" value={formdata.mobileno} placeholder="Mobile" onChange={fillformdob}></input> */}
                 <label for="dob"  style={{marginBotom: "0"}}>Date of birth</label>
-                <input className="inp form-control" id="dob" style={{marginTop: "0"}} type="date" name="dob" value={formdata.dob} onChange={fillformdob}></input>
+                <input className="inp form-control" id="dob" style={{marginTop: "0"}} type="date" name="dob" value={formdata.dob} onChange={fillformdob} required></input>
   <div class="form-group">
   <label for="edu"><h6>Education</h6></label>
-  <select id="edu" onChange={fillform} name="education">
+  <select id="edu" onChange={fillform} name="education" required>
                     <option selected>Choose your highest degree achieved</option>
                     <option value="Bachelor's">Bachelor's degree</option>
                     <option value="Master's">Master's degree</option>
@@ -120,21 +120,21 @@ setformdata({...formdata, [name]: event.target.value})
                 </select>
 <br></br>
     <label for="inputAddress"><h6>Address</h6></label>
-    <input type="text" class="inp form-control" id="inputAddress" placeholder="Street Number" name="streetnum" onChange={fillform}/>
+    <input type="text" class="inp form-control" id="inputAddress" placeholder="Street Number" name="streetnum" onChange={fillform} />
     <input type="text" class="inp form-control" name="housenum" placeholder="House Number" onChange={fillform}/>
-    <input type="text" class="inp form-control" placeholder="PinCode" name="pincode" value={formdata.pincode} onChange={handlepincodeChange}/>
+    <input type="text" class="inp form-control" placeholder="PinCode" name="pincode" value={formdata.pincode} onChange={handlepincodeChange} required/>
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="inputCity">City</label>
-      <input type="text" class="form-control" id="inputCity" name="city" value={formdata.city} onChange={fillform}/>
+      <input type="text" class="form-control" id="inputCity" name="city" value={formdata.city} onChange={fillform} required/>
     </div>
     <div class="form-group col-md-4">
       <label for="inputState">State</label>
-      <input type="text" class="form-control" name="state" value={formdata.state} onChange={fillform}/>
+      <input type="text" class="form-control" name="state" value={formdata.state} onChange={fillform} required/>
     </div>
   </div>
- <CountrySelect update={updateCountry} />
+ <CountrySelect update={updateCountry} required/>
  <div>
  <h6 style={{marginRight :"90px"}}>Upload a aadhar/pan/drivibg license</h6>
  <FileBase type="file" multiple={false}  onDone={({base64}) => {setformdata({...formdata, attachments: base64})}} />
