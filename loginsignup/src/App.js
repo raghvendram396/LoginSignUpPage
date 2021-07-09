@@ -1,10 +1,12 @@
 import React from "react";
 import "./App.css";
 import Otp from "./Otp";
-import image from "./images/sukh.png";
+import image from "./images/sukh.jpg";
 import Login from "./Login";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Signup from "./Signup";
+import DoLogin from "./DoLogin";
+import "./DoLogin.css";
 
 function App() {
   return (
@@ -27,7 +29,7 @@ function App() {
       <img src={image} className="Image"></img>
     </div>
     <div className="rightpart">
-      <h1>Login</h1></div>
+     <DoLogin /></div>
     </Route>
     <Route path="/">
     <div className="leftpart">

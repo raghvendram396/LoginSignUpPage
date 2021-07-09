@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 function Login() {
     return (
-        <div>
+        
             <div className="form">
                 <div className="top">
                     <h3>Welcome To Sukh Foundation</h3>
@@ -22,7 +22,7 @@ function Login() {
                 <button type="button" class="btn btn-primary btn-lg btn-block">Login</button></Link></div>
                 </div>
             </div>
-        </div>
+        
     )
 }
 

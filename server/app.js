@@ -51,6 +51,7 @@ const findPost=async (req,res) => {
 const data=req.body;
 console.log(data);
 //const data={mobileno: "8299852684"}
+// const data={email: "raghvendram396@gmail.com"}
 await Signuppost.findOne(data,function(err,foundItem){
    if(!err)
    {

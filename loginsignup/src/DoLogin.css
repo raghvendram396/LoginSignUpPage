@@ -5,4 +5,9 @@
     border-bottom: 1px solid black;
     padding: 5px;
     border-radius: 2px;
+    width: 100%;
+}
+
+.form-contol {
+    display: flex;
 }

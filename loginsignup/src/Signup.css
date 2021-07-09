@@ -22,3 +22,10 @@
 .form-group input {
 margin-bottom: 5px;
 }
+.proceedbutton {
+    margin-top: 30%;
+}
+
+.proceedbutton :hover {
+    text-decoration: none;
+}

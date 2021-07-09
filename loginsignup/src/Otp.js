@@ -5,6 +5,7 @@ import {updateStore} from "./action/action";
 import {Link} from "react-router-dom";
 //import {createPost} from "./api";
 import axios from "axios";
+import "./Otp.css";
 
 function Otp() {
     const [details,setmobile]=useState({
@@ -23,6 +24,7 @@ function Otp() {
     const [otpsent,setotpsent]=useState(false);
     const [otpfail,setotpfail]=useState(false);
     const [wrongotp,setwrongotp]=useState(false);
+    const [created, setcreated]=useState(false);
     const handleChange=(e) => {
     const name=e.target.name;
     const n=String(name);
@@ -32,6 +34,7 @@ function Otp() {
     {
     axios.post("http://localhost:5000/find",{mobileno:String(e.target.value)})
     .then(response => {
+      
       const {data}=response.data;
       console.log("Ye data");
       console.log(data);
@@ -46,15 +49,13 @@ function Otp() {
       else if(String(e.target.value).length==10)
       {setpresent(true);
       setmobile({...details, mobile: ""})}
-
-
     })
     .catch(err=> console.log(err));
     // setmobile({...details, [name]:value})
   }
 
 }
-const [created, setcreated]=useState(false);
+// const [created, setcreated]=useState(false);
     const handlefinalClick=() => {
 axios.post("http://localhost:5000/",{...wholeform, mobileno: String(details.mobile)})
 .then(response => {
@@ -117,32 +118,33 @@ axios.post("http://localhost:5000/",{...wholeform, mobileno: String(details.mobi
   }
 
   return (
-    <div>
-    <div style={{display : visform? "block": "none"}}>
-      <h2>Login Form</h2>
+    <div >
+    <div style={{display : visform? "block": "none", padding: "30px"}} className="form-group">
       <form onSubmit={onSignInSubmit} style={{display: otpsent? "none":"block"}}>
         <div id="sign-in-button"></div>
+        <div><h3>Verify Mobile</h3></div>
         <div style={{display :present ? "block":"none"}}>Account exist with given number</div>
         <div style={{display: otpfail && !present? "block": "none", color: "red"}}>Otp not sent</div>
-        <input type="number" name="mobile" placeholder="Mobile number" value={details.mobile===0 ? "" : details.mobile} required onChange={handleChange}/>
-        <button type="submit">Submit</button>
+        <input className="inp form-control" type="number" style={{marginBottom: "20px", marginTop: "20px"}} name="mobile" placeholder="Enter Mobile number" value={details.mobile===0 ? "" : details.mobile} required onChange={handleChange}/>
+        <button type="submit" className="btn-primary btn-lg btn-block">Submit</button>
       </form>
 
-     
-      <form onSubmit={onSubmitOTP} style={{display: otpsent ? "block":"none"}}>
+     </div>
+     <div>
+      <form onSubmit={onSubmitOTP} style={{display: otpsent && !created? "block":"none", paddingBottom: "40px", border: "none"}} className="form-control">
       <h2>Enter OTP</h2>
       <div style={{display: otpsent ? "block": "none" , color: "green"}}>Otp has been sent</div>
-        <input type="number" name="otp" placeholder="OTP Number" required onChange={handleChange}/>
+        <input className="inp form-control" type="number" name="otp" placeholder="OTP Number" required onChange={handleChange}/>
         <div style={{display : wrongotp ? "block" : "none"}}>Wrong otp</div>
-        <button type="submit">Submit</button>
+        <button type="submit" className="btn-primary btn-lg btn-block">Submit</button>
       </form>
-      <button type="submit" onClick={handlefinalClick} style={{display: verified ? "block": "none"}}>
+      <button className="btn-success btn-lg btn-block" type="submit" onClick={handlefinalClick}  style={{marginBottom:"30px", display: verified ? "block": "none"}}>
           Signup
-      </button></div>
-      <div style={{display: created ? "block" : "none"}}>
-      <h1>account created</h1>
+      </button> </div>
+      <div style={{display: created ? "block" : "none", padding: "20px"}}>
+      <h3>Account created</h3>
       <Link to="/Login">
-      <button>Login</button></Link></div>
+      <button className="btn-primary btn-lg btn-block">Login</button></Link></div>
     </div>
   )
 }

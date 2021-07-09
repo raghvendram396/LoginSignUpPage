@@ -69,7 +69,6 @@ console.log("ye form ka data h");
     event.preventDefault();
     if(checkcnf)
     {setallok(true);
-  
     }
     }
     const handleallokclick=() => {
@@ -96,7 +95,7 @@ setformdata({...formdata, [name]: event.target.value})
     }
     return (
         <div className="signup form-group">
-            <form className="ff" autofill="false" onSubmit={handleSubmit}>
+            <form className="ff" autofill="false" onSubmit={handleSubmit} style={{display : !allok ? "block":"none" }}>
                 <input className="inp form-control" type="text" name="firstname" value={formdata.firstname} placeholder="First Name" onChange={fillform} required></input>
                 <input className="inp form-control" type="text" name="middlename" value={formdata.middlename} placeholder="Middle Name" onChange={fillform} ></input>
                 <input className="inp form-control" type="text" name="lastname" value={formdata.lastname} placeholder="Last Name" onChange={fillform} required></input>
@@ -109,7 +108,7 @@ setformdata({...formdata, [name]: event.target.value})
                 <label for="dob"  style={{marginBotom: "0"}}>Date of birth</label>
                 <input className="inp form-control" id="dob" style={{marginTop: "0"}} type="date" name="dob" value={formdata.dob} onChange={fillformdob} required></input>
   <div class="form-group">
-  <label for="edu"><h6>Education</h6></label>
+  <label for="edu"><h6 style={{marginTop: "20px"}}>Education</h6></label>
   <select id="edu" onChange={fillform} name="education" required>
                     <option selected>Choose your highest degree achieved</option>
                     <option value="Bachelor's">Bachelor's degree</option>
@@ -119,7 +118,7 @@ setformdata({...formdata, [name]: event.target.value})
                     <option value="High School">High School</option>
                 </select>
 <br></br>
-    <label for="inputAddress"><h6>Address</h6></label>
+    <label for="inputAddress"><h6 style={{marginTop: "20px"}}>Address</h6></label>
     <input type="text" class="inp form-control" id="inputAddress" placeholder="Street Number" name="streetnum" onChange={fillform} />
     <input type="text" class="inp form-control" name="housenum" placeholder="House Number" onChange={fillform}/>
     <input type="text" class="inp form-control" placeholder="PinCode" name="pincode" value={formdata.pincode} onChange={handlepincodeChange} required/>
@@ -139,14 +138,14 @@ setformdata({...formdata, [name]: event.target.value})
  <h6 style={{marginRight :"90px"}}>Upload a aadhar/pan/drivibg license</h6>
  <FileBase type="file" multiple={false}  onDone={({base64}) => {setformdata({...formdata, attachments: base64})}} />
  </div>        
- <p style={{color: "red", display: submit && !checkcnf ? "block": "none"}}>Password did not match</p>
+ <p style={{color: "red", display: submit && !checkcnf && cnfpass!="" ? "block": "none"}}>Password did not match</p>
  {/* <Link to={checkcnf ? "/otp":"/signup" } > */}
-  <button type="submit" class="btn btn-primary"  onClick={handleClick}>Sign in</button>
+  <button type="submit" class="btn btn-primary btn-lg btn-block"  onClick={handleClick} style={{marginTop: "20px"}}> Sign up</button>
   {/* </Link> */}
             </form>
             <div style={{display: allok ? "block":"none"}}>
             <Link to="/otp">
-            <button onClick={handleallokclick}>Proceed</button></Link></div>
+            <button onClick={handleallokclick}  className="btn btn-primary btn-lg btn-block proceedbutton">Proceed</button></Link></div>
         </div>
     )
 }
