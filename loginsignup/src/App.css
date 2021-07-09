@@ -24,3 +24,9 @@
     flex:1;
     
 }
+
+@media (max-width: 1200px)
+{
+    .app {display: flex;
+    flex-direction: column;}
+}

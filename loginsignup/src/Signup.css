@@ -29,3 +29,10 @@ margin-bottom: 5px;
 .proceedbutton :hover {
     text-decoration: none;
 }
+
+@media (max-width: 547px) {
+   .form-group {
+      padding-right: 50px;
+
+   }
+}
