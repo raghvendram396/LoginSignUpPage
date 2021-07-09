@@ -32,7 +32,7 @@ function Otp() {
     setmobile({...details, [name]:value})
     if(n==="mobile")
     {
-    axios.post("http://localhost:5000/find",{mobileno:String(e.target.value)})
+    axios.post("https://warm-tor-46782.herokuapp.com/find",{mobileno:String(e.target.value)})
     .then(response => {
       
       const {data}=response.data;
@@ -57,7 +57,7 @@ function Otp() {
 }
 // const [created, setcreated]=useState(false);
     const handlefinalClick=() => {
-axios.post("http://localhost:5000/",{...wholeform, mobileno: String(details.mobile)})
+axios.post("https://warm-tor-46782.herokuapp.com/",{...wholeform, mobileno: String(details.mobile)})
 .then(response => {
     setcreated(true);
     setverified(false);

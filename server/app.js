@@ -3,8 +3,10 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 //import { dosignup } from "./controllers/signup.js";
 import cors from "cors";
+import dotenv from "dotenv";
 
 const app=express();
+dotenv.config();
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cors());
@@ -69,10 +71,12 @@ res.json(foundItem);
 })
 
 }
+
 app.post("/find",findPost);
-mongoose.connect("mongodb://localhost:27017/LoginSignUp",{useNewUrlParser: true, useUnifiedTopology: true})
-.then(() => app.listen(5000,function(){
-   console.log("Server Running successfully on 5000");
+const PORT=process.env.PORT || 5000;
+mongoose.connect(process.env.CONNECTION_URL,{useNewUrlParser: true, useUnifiedTopology: true})
+.then(() => app.listen(process.env.PORT || 5000,function(){
+   console.log("Server Running successfully on ",PORT);
 }))
 .catch((error) =>  {console.log(error.message)});
 mongoose.set('useFindAndModify', false);
