@@ -126,16 +126,16 @@ setformdata({...formdata, [name]: event.target.value})
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="inputCity">City</label>
-      <input type="text" class="form-control" id="inputCity" name="city" value={formdata.city} onChange={fillform} required/>
+      <input type="text" class="form-control" id="inputCity" name="city" value={formdata.city} onChange={fillform} required disabled/>
     </div>
     <div class="form-group col-md-4">
       <label for="inputState">State</label>
-      <input type="text" class="form-control" name="state" value={formdata.state} onChange={fillform} required/>
+      <input type="text" class="form-control" name="state" value={formdata.state} onChange={fillform} disabled required/>
     </div>
   </div>
  <CountrySelect update={updateCountry} required/>
  <div>
- <h6 style={{marginRight :"90px"}}>Upload a aadhar/pan/drivibg license</h6>
+ <h6 style={{marginRight :"90px"}}>Upload a aadhar/pan/driving license</h6>
  <FileBase type="file" multiple={false}  onDone={({base64}) => {setformdata({...formdata, attachments: base64})}} />
  </div>        
  <p style={{color: "red", display: submit && !checkcnf && cnfpass!="" ? "block": "none"}}>Password did not match</p>

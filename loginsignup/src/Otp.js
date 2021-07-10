@@ -25,7 +25,13 @@ function Otp() {
     const [otpfail,setotpfail]=useState(false);
     const [wrongotp,setwrongotp]=useState(false);
     const [created, setcreated]=useState(false);
+    const [loading,setloading]=useState(false);
     const [ok,setok]=useState(false);
+    const [mobilewait,setmobilewait]=useState(false);
+    const [howotp,sethowotp]=useState(false);
+    const [loadingotp,setloadingotp]=useState(false);
+    const [finalloading,setfinalloading]=useState(false);
+    const [otpload,setotpload]=useState(false);
   //   const handleChange=(e) => {
   //     const name=e.target.name;
   //     const n=String(name);
@@ -61,27 +67,30 @@ const handleChange=async (e) => {
        const n=String(name);
          const value=e.target.value;
      setmobile({...details, [name]:value})
+     
   try {
     // const name=e.target.name;
     //    const n=String(name);
     //      const value=e.target.value;
     //  setmobile({...details, [name]:value})
      if(n=="mobile" && String(e.target.value).length==10)
-     {
+     { setloading(true);
        const res=await axios.post("https://warm-tor-46782.herokuapp.com/find",{mobileno:String(e.target.value)});
+      
        console.log("Ye data");
        console.log(res.data);
        if(res.data!=null)
        {setpresent(true);
+        setloading(false);
       setok(false);
     setmobile({...details, mobile: ""})
-    console.log("10 ho gya")
   }
     else 
-    {setok(true)
-      console.log("Ho gya bhai")
+    {setok(true);
+      setloading(false);
     }
      }
+     
   }
   catch (err){
     console.log(err);
@@ -89,17 +98,21 @@ const handleChange=async (e) => {
 }
 // const [created, setcreated]=useState(false);
     const handlefinalClick=() => {
+      setfinalloading(true);
 axios.post("https://warm-tor-46782.herokuapp.com/",{...wholeform, mobileno: String(details.mobile)})
 .then(response => {
     setcreated(true);
     setverified(false);
     setvisform(false);
+    setfinalloading(false);
 })
-.catch(err=> console.log(err));
+.catch(err=>{ console.log(err)
+setfinalloading(false)});
     }
     const onSignInSubmit=(e)=> {
         e.preventDefault();
         configureCaptcha();
+        setmobilewait(true);
         const phoneNumber = "+91" + details.mobile
         console.log(phoneNumber)
         const appVerifier = window.recaptchaVerifier;
@@ -110,6 +123,7 @@ axios.post("https://warm-tor-46782.herokuapp.com/",{...wholeform, mobileno: Stri
               window.confirmationResult = confirmationResult;
               setotpsent(true);
               setotpfail(false);
+              setmobilewait(false);
               // ...
             }).catch((error) => {
               // Error; SMS not sent
@@ -120,6 +134,7 @@ axios.post("https://warm-tor-46782.herokuapp.com/",{...wholeform, mobileno: Stri
               setpresent(false);
               console.log("SMS not sent")
               console.log(error)
+              setmobilewait(false);
             });
      }
      
@@ -136,6 +151,9 @@ axios.post("https://warm-tor-46782.herokuapp.com/",{...wholeform, mobileno: Stri
     }
   const onSubmitOTP=(event) => {
     event.preventDefault()
+    sethowotp(true);
+    setloadingotp(true);
+    setotpload(true);
     const code = details.otp
     console.log(code)
     window.confirmationResult.confirm(code).then((result) => {
@@ -144,10 +162,15 @@ axios.post("https://warm-tor-46782.herokuapp.com/",{...wholeform, mobileno: Stri
       console.log(JSON.stringify(user))
       setverified(true);
       setwrongotp(false);
+      setloadingotp(false);
+      setotpload(false);
       // ...
     }).catch((error) => {
       setwrongotp(true);
    console.log("wrong otp")
+   setloadingotp(false);
+   setotpload(false);
+   sethowotp(false);
     });
   }
 
@@ -157,22 +180,27 @@ axios.post("https://warm-tor-46782.herokuapp.com/",{...wholeform, mobileno: Stri
       <form onSubmit={onSignInSubmit} style={{display: otpsent? "none":"block"}}>
         <div id="sign-in-button"></div>
         <div><h3>Verify Mobile</h3></div>
-        <div style={{display :present && !ok? "block":"none"}}>Account exist with given number</div>
+        <div style={{display :present && !ok && !loading? "block":"none"}}>Account exist with given number</div>
+        <div style={{display: loading ? "block" : "none"}}>Please wait...</div>
         <div style={{display: otpfail && !present? "block": "none", color: "red"}}>Otp not sent</div>
         <input className="inp form-control" type="number" style={{marginBottom: "20px", marginTop: "20px"}} name="mobile" placeholder="Enter Mobile number" value={details.mobile===0 ? "" : details.mobile} required onChange={handleChange}/>
-        <button type="submit" className="btn-primary btn-lg btn-block" style={{display : ok? "block":"none"}}>Submit</button>
+        <div style={{display:mobilewait?"block":"none"}}>Please Wait...</div>
+        <button type="submit" className="btn-primary btn-lg btn-block" style={{display : ok && !mobilewait? "block":"none"}}>Submit</button>
       </form>
 
      </div>
      <div>
-      <form onSubmit={onSubmitOTP} style={{display: otpsent && !created? "block":"none", paddingBottom: "40px", border: "none"}} className="form-control">
+      <form onSubmit={onSubmitOTP} style={{display: otpsent && !created && !howotp? "block":"none", paddingBottom: "40px", border: "none"}} className="form-control">
       <h2>Enter OTP</h2>
       <div style={{display: otpsent ? "block": "none" , color: "green"}}>Otp has been sent</div>
         <input className="inp form-control" type="number" name="otp" placeholder="OTP Number" required onChange={handleChange}/>
         <div style={{display : wrongotp ? "block" : "none"}}>Wrong otp</div>
         <button type="submit" className="btn-primary btn-lg btn-block">Submit</button>
       </form>
-      <button className="btn-success btn-lg btn-block" type="submit" onClick={handlefinalClick}  style={{marginBottom:"30px", display: verified ? "block": "none"}}>
+      {/* <div style={{dipslay: loadingotp ? "block": "none"}}>Please Wait...</div> */}
+      <div style={{display: otpload ? "block": "none", paddingBottom: "30px"}}>Please Wait...</div>
+     <div style={{display: finalloading ? "block": "none"}}>Please Wait...</div>
+      <button className="btn-success btn-lg btn-block" type="submit" onClick={handlefinalClick}  style={{marginBottom:"30px", display: verified && howotp && !finalloading ? "block": "none"}}>
           Signup
       </button> </div>
       <div style={{display: created ? "block" : "none", padding: "20px"}}>
