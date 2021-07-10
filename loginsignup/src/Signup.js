@@ -126,11 +126,11 @@ setformdata({...formdata, [name]: event.target.value})
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="inputCity">City</label>
-      <input type="text" class="form-control" id="inputCity" name="city" value={formdata.city} onChange={fillform} required disabled/>
+      <input type="text" class="form-control" id="inputCity" name="city" value={formdata.city} onChange={fillform} disabled/>
     </div>
     <div class="form-group col-md-4">
       <label for="inputState">State</label>
-      <input type="text" class="form-control" name="state" value={formdata.state} onChange={fillform} disabled required/>
+      <input type="text" class="form-control" name="state" value={formdata.state} onChange={fillform} disabled />
     </div>
   </div>
  <CountrySelect update={updateCountry} required/>
