@@ -82,10 +82,12 @@ axios.post("https://warm-tor-46782.herokuapp.com/",{...wholeform, mobileno: Stri
             }).catch((error) => {
               // Error; SMS not sent
               // ...
+             
               setotpsent(false);
               setotpfail(true);
               setpresent(false);
               console.log("SMS not sent")
+              console.log(error)
             });
      }
      

@@ -94,7 +94,7 @@ setformdata({...formdata, [name]: event.target.value})
       setformdata({...formdata, dob: value});
     }
     return (
-        <div className="signup form-group">
+        <div className="signup form-group" >
             <form className="ff" autofill="false" onSubmit={handleSubmit} style={{display : !allok ? "block":"none" }}>
                 <input className="inp form-control" type="text" name="firstname" value={formdata.firstname} placeholder="First Name" onChange={fillform} required></input>
                 <input className="inp form-control" type="text" name="middlename" value={formdata.middlename} placeholder="Middle Name" onChange={fillform} ></input>

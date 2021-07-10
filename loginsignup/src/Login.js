@@ -7,7 +7,7 @@ function Login() {
         
             <div className="form">
                 <div className="top">
-                    <h3>Welcome To Sukh Foundation</h3>
+                    <h3 style={{textAlign: "center"}}>Welcome To Sukh Foundation</h3>
                 </div>
                 <div className="bottom">
                 <div className="signupbutton">
