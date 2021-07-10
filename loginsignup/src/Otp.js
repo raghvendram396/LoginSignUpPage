@@ -25,35 +25,67 @@ function Otp() {
     const [otpfail,setotpfail]=useState(false);
     const [wrongotp,setwrongotp]=useState(false);
     const [created, setcreated]=useState(false);
-    const handleChange=(e) => {
-    const name=e.target.name;
-    const n=String(name);
-    const value=e.target.value;
-    setmobile({...details, [name]:value})
-    if(n==="mobile")
-    {
-    axios.post("https://warm-tor-46782.herokuapp.com/find",{mobileno:String(e.target.value)})
-    .then(response => {
-      
-      const {data}=response.data;
-      console.log("Ye data");
-      console.log(data);
-      console.log(e.target.value.length);
-      console.log("Ye post /find me h");
-      console.log(data);
-      console.log("Ye mobile");
-      console.log(details.mobile);
+    const [ok,setok]=useState(false);
+  //   const handleChange=(e) => {
+  //     const name=e.target.name;
+  //     const n=String(name);
+  //     const value=e.target.value;
+  //     setmobile({...details, [name]:value})
+  //     if(n==="mobile")
+  //     {
+  //     axios.post("https://warm-tor-46782.herokuapp.com/find",{mobileno:String(e.target.value)})
+  //     .then(response => {
+        
+  //       const {data}=response.data;
+  //       console.log("Ye data");
+  //       console.log(data);
+  //       console.log(e.target.value.length);
+  //       console.log("Ye post /find me h");
+  //       console.log(data);
+  //       console.log("Ye mobile");
+  //       console.log(details.mobile);
+    
+  //       if(data!=null)
+  //       {setpresent(false);}
+  //       else if(String(e.target.value).length==10)
+  //       {setpresent(true);
+  //       setmobile({...details, mobile: ""})}
+  //     })
+  //     .catch(err=> console.log(err));
+  //     // setmobile({...details, [name]:value})
+  //   }
   
-      if(data!=null)
-      {setpresent(false);}
-      else if(String(e.target.value).length==10)
-      {setpresent(true);
-      setmobile({...details, mobile: ""})}
-    })
-    .catch(err=> console.log(err));
-    // setmobile({...details, [name]:value})
+  // }
+const handleChange=async (e) => {
+  const name=e.target.name;
+       const n=String(name);
+         const value=e.target.value;
+     setmobile({...details, [name]:value})
+  try {
+    // const name=e.target.name;
+    //    const n=String(name);
+    //      const value=e.target.value;
+    //  setmobile({...details, [name]:value})
+     if(n=="mobile" && String(e.target.value).length==10)
+     {
+       const res=await axios.post("https://warm-tor-46782.herokuapp.com/find",{mobileno:String(e.target.value)});
+       console.log("Ye data");
+       console.log(res.data);
+       if(res.data!=null)
+       {setpresent(true);
+      setok(false);
+    setmobile({...details, mobile: ""})
+    console.log("10 ho gya")
   }
-
+    else 
+    {setok(true)
+      console.log("Ho gya bhai")
+    }
+     }
+  }
+  catch (err){
+    console.log(err);
+  }
 }
 // const [created, setcreated]=useState(false);
     const handlefinalClick=() => {
@@ -125,10 +157,10 @@ axios.post("https://warm-tor-46782.herokuapp.com/",{...wholeform, mobileno: Stri
       <form onSubmit={onSignInSubmit} style={{display: otpsent? "none":"block"}}>
         <div id="sign-in-button"></div>
         <div><h3>Verify Mobile</h3></div>
-        <div style={{display :present ? "block":"none"}}>Account exist with given number</div>
+        <div style={{display :present && !ok? "block":"none"}}>Account exist with given number</div>
         <div style={{display: otpfail && !present? "block": "none", color: "red"}}>Otp not sent</div>
         <input className="inp form-control" type="number" style={{marginBottom: "20px", marginTop: "20px"}} name="mobile" placeholder="Enter Mobile number" value={details.mobile===0 ? "" : details.mobile} required onChange={handleChange}/>
-        <button type="submit" className="btn-primary btn-lg btn-block">Submit</button>
+        <button type="submit" className="btn-primary btn-lg btn-block" style={{display : ok? "block":"none"}}>Submit</button>
       </form>
 
      </div>
