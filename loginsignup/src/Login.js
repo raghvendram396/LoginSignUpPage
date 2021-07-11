@@ -1,8 +1,13 @@
 import React from 'react'
 import "./Login.css";
 import {Link} from "react-router-dom";
+import { useState } from 'react';
+import firebase from './firebase';
 
 function Login() {
+    const [email,setemail]=useState("");
+    const [pass,setpass]=useState("");
+ 
     return (
         
             <div className="form">
@@ -21,6 +26,7 @@ function Login() {
                 <Link  style={{ color: 'inherit', textDecoration: 'inherit'}} to="doLogin">
                 <button type="button" class="btn btn-primary btn-lg btn-block">Login</button></Link></div>
                 </div>
+            
             </div>
         
     )

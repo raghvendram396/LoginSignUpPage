@@ -11,7 +11,6 @@ function Signup() {
         firstname: "",
         middlename: "",
         lastName: "",
-        email: "",
         password: "",
         dob: "",
        education: "",
@@ -21,7 +20,7 @@ function Signup() {
         city: "",
         state: "",
         country: "",
-        attachments: ""
+        attachments: "",
     })
 
     const dispatch = useDispatch();
@@ -99,7 +98,7 @@ setformdata({...formdata, [name]: event.target.value})
                 <input className="inp form-control" type="text" name="firstname" value={formdata.firstname} placeholder="First Name" onChange={fillform} required></input>
                 <input className="inp form-control" type="text" name="middlename" value={formdata.middlename} placeholder="Middle Name" onChange={fillform} ></input>
                 <input className="inp form-control" type="text" name="lastname" value={formdata.lastname} placeholder="Last Name" onChange={fillform} required></input>
-                <input className="inp form-control" type="email" name="email" value={formdata.email} placeholder="Email" onChange={fillform} required></input>
+                {/* <input className="inp form-control" type="email" name="email" value={formdata.email} placeholder="Email" onChange={fillform} required></input> */}
                 <input className="inp form-control" type="password" name="password" value={formdata.password} placeholder="Password" onChange={fillform} required></input>
 
                 <input className="inp form-control" type="password" id="cnf" name="Confirmpassword" value={cnfpass} placeholder="Confirm password" onChange={(event) =>{setcnfpass(event.target.value)}} onChane={handlecnf} required></input>
