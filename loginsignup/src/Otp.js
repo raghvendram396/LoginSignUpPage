@@ -54,16 +54,38 @@ function Otp() {
         console.log("Email sent");
         setshowsignup(true);
         setTimeout(function() {
-          settimeemail(true);
+          // settimeemail(true);
+          axios.post("https://warm-tor-46782.herokuapp.com/",{...wholeform, mobileno: String(details.mobile), email: Email})
+          .then(response => {
+              setcreated(true);
+              setverified(false);
+              setvisform(false);
+              settimeemail(false)
+              setfinalloading(false);
+          })
+          .catch(err=>{ console.log(err)
+          setfinalloading(false)});
+          setfinalloading(true);
+          // axios.post("https://warm-tor-46782.herokuapp.com/",{...wholeform, mobileno: String(details.mobile), email: Email})
+          // .then(response => {
+          //     setcreated(true);
+          //     setverified(false);
+          //     setvisform(false);
+          //     settimeemail(false)
+          //     setfinalloading(false);
+          // })
+          // .catch(err=>{ console.log(err)
+          // setfinalloading(false)});
           setshowsignup(false);
-        },12000)
+        },8000)
         setnotsent(false);
         setloadingemail(false);
       })
-      .catch(err => {alert(err);
+      .catch(err => {
       setloadingemail(false);
       setemailsent(false);
       setnotsent(true);
+      alert(err);
     })
     }
   //   const handleChange=(e) => {
