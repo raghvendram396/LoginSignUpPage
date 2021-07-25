@@ -1,11 +1,10 @@
 import React,{useState} from 'react'
 import "./DoLogin.css"
 import axios from "axios";
-import Welcome from './Welcome';
 
 function DoLogin() {
     const [detail,setdetail]=useState({
-        email: "",
+        phone: 0,
         password: ""
     })
     const [wrong,setwrong]=useState(false);
@@ -20,7 +19,7 @@ function DoLogin() {
     }
     const handleSubmit=(e) => {
         e.preventDefault();
-        axios.post("https://warm-tor-46782.herokuapp.com/find",{email:String(detail.email)})
+        axios.post("https://warm-tor-46782.herokuapp.com/find",{mobileno:String(detail.phone)})
         .then(response => {
             console.log("Response")
             console.log(response)
@@ -46,12 +45,12 @@ function DoLogin() {
         <div>
         <div className="form" style={{display: !detailcorrect ? "block": "none"}}>
             <div className="top">
-                <h3>Welcome to Sukh Foundation</h3>
+                <h3>Welcome to Login Page</h3>
                 <h4 style={{textAlign: "center"}}>Login into your account</h4>
                 <div className="form-group">
                 <form style={{backgroundColor: "white", borderRadius: "10px", padding: "20px",marginTop: "20%"}} onSubmit={handleSubmit} >
-   <p style={{color: "red",display: wrong ? "block":"none"}}>Wrong email or password</p>
-   <input className="inp form-contol" type="email" name="email" value={detail.email} placeholder="Enter Email" onChange={handleChange} required></input>
+   <p style={{color: "red",display: wrong ? "block":"none"}}>Wrong phone or password</p>
+   <input className="inp form-contol" type="number" name="phone" value={detail.phone===0 ? "" : detail.phone} placeholder="Enter Phone" onChange={handleChange} required></input>
   <input className="inp form-contol" type="password" name="password" value={detail.password} placeholder="Enter Password" onChange={handleChange} required></input>
 <button type="submit" className="btn-primary btn-lg btn-block" style={{marginTop: "20px"}}>Login</button>
                 </form></div>

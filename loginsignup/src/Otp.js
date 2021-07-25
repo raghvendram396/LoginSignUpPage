@@ -5,6 +5,7 @@ import {updateStore} from "./action/action";
 import {Link} from "react-router-dom";
 //import {createPost} from "./api";
 import axios from "axios";
+import { useHistory } from 'react-router';
 import "./Otp.css";
 
 function Otp() {
@@ -12,6 +13,7 @@ function Otp() {
         mobile:0,
         otp:0
     })
+    const history=useHistory();
     const [visform,setvisform]=useState(true)
     const wholeform=useSelector(state=> state);
    // let wholeform;
@@ -19,7 +21,6 @@ function Otp() {
     console.log(wholeform);
     const dispatch=useDispatch();
    // useEffect(()=> {dispatch(updateStore(wholeform))},[dispatch])
-   const [Email,setemail]=useState("");
     const [verified, setverified] =useState(false);
     const [present,setpresent]=useState(false);
     const [otpsent,setotpsent]=useState(false);
@@ -33,61 +34,6 @@ function Otp() {
     const [loadingotp,setloadingotp]=useState(false);
     const [finalloading,setfinalloading]=useState(false);
     const [otpload,setotpload]=useState(false);
-    const [emailsent,setemailsent]=useState(false);
-    const [loadingemail,setloadingemail]=useState(false);
-    const [timeemail,settimeemail]=useState(false);
-    const [showsignup,setshowsignup]=useState(false);
-    const [notsent,setnotsent]=useState(false);
-    const handleEmailChange=(e) => {
-      setemail(e.target.value);
-    }
-    const handleEmail =(e) =>
-    {
-      e.preventDefault();
-      setloadingemail(true);
-      firebase.auth().createUserWithEmailAndPassword(Email,"123456789")
-      .then((userCredential)=>{
-          // send verification mail.
-        userCredential.user.sendEmailVerification();
-        firebase.auth().signOut();
-        setemailsent(true);
-        console.log("Email sent");
-        setshowsignup(true);
-        setTimeout(function() {
-          // settimeemail(true);
-          axios.post("https://warm-tor-46782.herokuapp.com/",{...wholeform, mobileno: String(details.mobile), email: Email})
-          .then(response => {
-              setcreated(true);
-              setverified(false);
-              setvisform(false);
-              settimeemail(false)
-              setfinalloading(false);
-          })
-          .catch(err=>{ console.log(err)
-          setfinalloading(false)});
-          setfinalloading(true);
-          // axios.post("https://warm-tor-46782.herokuapp.com/",{...wholeform, mobileno: String(details.mobile), email: Email})
-          // .then(response => {
-          //     setcreated(true);
-          //     setverified(false);
-          //     setvisform(false);
-          //     settimeemail(false)
-          //     setfinalloading(false);
-          // })
-          // .catch(err=>{ console.log(err)
-          // setfinalloading(false)});
-          setshowsignup(false);
-        },8000)
-        setnotsent(false);
-        setloadingemail(false);
-      })
-      .catch(err => {
-      setloadingemail(false);
-      setemailsent(false);
-      setnotsent(true);
-      alert(err);
-    })
-    }
   //   const handleChange=(e) => {
   //     const name=e.target.name;
   //     const n=String(name);
@@ -155,12 +101,11 @@ const handleChange=async (e) => {
 // const [created, setcreated]=useState(false);
     const handlefinalClick=() => {
       setfinalloading(true);
-axios.post("https://warm-tor-46782.herokuapp.com/",{...wholeform, mobileno: String(details.mobile), email: Email})
+axios.post("https://warm-tor-46782.herokuapp.com/",{...wholeform, mobileno: String(details.mobile)})
 .then(response => {
     setcreated(true);
     setverified(false);
     setvisform(false);
-    settimeemail(false)
     setfinalloading(false);
 })
 .catch(err=>{ console.log(err)
@@ -192,9 +137,12 @@ setfinalloading(false)});
               console.log("SMS not sent")
               console.log(error)
               setmobilewait(false);
+              setTimeout(() => {
+                history.replace("/")
+              }, 3000);
+             
             });
      }
-
      
   const configureCaptcha=() => {
     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', {
@@ -229,6 +177,7 @@ setfinalloading(false)});
    setloadingotp(false);
    setotpload(false);
    sethowotp(false);
+
     });
   }
 
@@ -240,10 +189,14 @@ setfinalloading(false)});
         <div><h3>Verify Mobile</h3></div>
         <div style={{display :present && !ok && !loading? "block":"none"}}>Account exist with given number</div>
         <div style={{display: loading ? "block" : "none"}}>Please wait...</div>
-        <div style={{display: otpfail && !present? "block": "none", color: "red"}}>Otp not sent</div>
-        <input className="inp form-control" type="number" style={{marginBottom: "20px", marginTop: "20px"}} name="mobile" placeholder="Enter Mobile number" value={details.mobile===0 ? "" : details.mobile} required onChange={handleChange}/>
-        <div style={{display:mobilewait?"block":"none"}}>Please Wait...</div>
-        <button type="submit" className="btn-primary btn-lg btn-block" style={{display : ok && !mobilewait? "block":"none"}}>Submit</button>
+        <div style={{display: otpfail && !present? "block": "none"}}>
+        <p style={{color: "red"}}>otp not sent</p>
+        <p>Redirecting...</p>
+        <p>Please Wait...</p>
+        </div>
+        <input className="inp form-control" type="number" style={{marginBottom: "20px", marginTop: "20px", display:!(otpfail && !present )? "block":"none"}} name="mobile" placeholder="Enter Mobile number" value={details.mobile===0 ? "" : details.mobile} required onChange={handleChange}/>
+        <div style={{display:mobilewait  &&  !(otpfail && !present )?"block":"none"}}>Please Wait...</div>
+        <button type="submit" className="btn-primary btn-lg btn-block" style={{display : ok && !mobilewait &&  !(otpfail && !present )? "block":"none"}}>Submit</button>
       </form>
 
      </div>
@@ -253,31 +206,18 @@ setfinalloading(false)});
       <div style={{display: otpsent ? "block": "none" , color: "green"}}>Otp has been sent</div>
         <input className="inp form-control" type="number" name="otp" placeholder="OTP Number" required onChange={handleChange}/>
         <div style={{display : wrongotp ? "block" : "none"}}>Wrong otp</div>
-        <button type="submit" className="btn-primary btn-lg btn-block">Submit</button>
+        <button   type="submit" className="btn-primary btn-lg btn-block">Submit</button>
       </form>
-      <form className="form-group" style={{display: verified && howotp && !finalloading && !emailsent? "block":"none" }} >
-        <h2>Enter Email for verification</h2>
-          <input type="email" className="form-control" name="Email" value={Email} placeholder="Enter Email" onChange={handleEmailChange}></input>
-          <button type="submit" className="btn-primary btn-lg" onClick={handleEmail}>Submit</button> 
-          <div style={{display: loadingemail? "block": "none"}}>Please Wait...</div>
-          <div style={{display: emailsent ? "block": "none"}}><p style={{color: "green"}}>Email has been sent </p><p>Click link given in mail and Wait...</p></div>
-       <div style={{display: notsent? "block":"none", color: "red"}}>Email not sent</div>
-        </form>
       {/* <div style={{dipslay: loadingotp ? "block": "none"}}>Please Wait...</div> */}
       <div style={{display: otpload ? "block": "none", paddingBottom: "30px"}}>Please Wait...</div>
      <div style={{display: finalloading ? "block": "none"}}>Please Wait...</div>
-     {/* {emailsent && setTimeout(function(){settimeemail(true)})} */}
-     <div style={{display: showsignup ? "block":"none"}}>Click link sent to the given mail and please wait for few seconds...</div>
-      <button className="btn-success btn-lg btn-block" type="submit" onClick={handlefinalClick}  style={{marginBottom:"30px", display:timeemail && verified && howotp && !finalloading ? "block": "none"}}>
+      <button className="btn-success btn-lg btn-block" type="submit" onClick={handlefinalClick}  style={{marginBottom:"30px", display: verified && howotp && !finalloading ? "block": "none"}}>
           Signup
       </button> </div>
-      <div>
-        
-      </div>
       <div style={{display: created ? "block" : "none", padding: "20px"}}>
       <h3>Account created</h3>
       <Link to="/Login">
-      <button className="btn-primary btn-lg btn">Login</button></Link></div>
+      <button className="btn-primary btn-lg btn-block">Login</button></Link></div>
     </div>
   )
 }

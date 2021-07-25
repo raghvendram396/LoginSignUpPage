@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import Otp from "./Otp";
-import image from "./images/sukh.jpg";
+import image from "./images/autheticate.jpg";
 import Login from "./Login";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Signup from "./Signup";

@@ -12,7 +12,7 @@ function Login() {
         
             <div className="form">
                 <div className="top">
-                    <h3 style={{textAlign: "center"}}>Welcome to Sukh Foundation</h3>
+                    <h3 style={{textAlign: "center"}}>Signup/Login to continue</h3>
                 </div>
                 <div className="bottom">
                 <div className="signupbutton">
